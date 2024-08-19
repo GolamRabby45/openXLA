@@ -52,8 +52,8 @@ class FakeDataset(Dataset):
     return ViTForImageClassification(ViTConfig(num_labels=1000))
  
   def main(rank, world_size=num_gpus):
-  dataset = FakeDataset()
-  model = build_model()
+    dataset = FakeDataset()
+    model = build_model()
 
   if is_xla:
     device = xm.xla_device()
