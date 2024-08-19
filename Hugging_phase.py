@@ -74,7 +74,7 @@ class FakeDataset(Dataset):
     data_loader = pl.MpDeviceLoader(data_loader, device)  
     loss_function = torch.nn.CrossEntropyLoss()
     t0 = time.perf_counter()
-    
+
   for idx, (inputs, targets) in enumerate(data_loader, start=1):
     if not is_xla:
       inputs = inputs.to(torch.cuda.current_device())
@@ -91,11 +91,12 @@ class FakeDataset(Dataset):
     if rank == 0 and idx%1000 == 0:
       batch_time = time.perf_counter() - t0
       print(f'step: {idx}: mean step time is {batch_time/1000}')
-      t0 = time.perf_counter()  if not is_xla:
+      t0 = time.perf_counter()  
+  if not is_xla:
     dist.destroy_process_group()
 
 def _mp_fn(index):
-  main(index)
+    main(index)
 
 if __name__ == "__main__":
   if is_xla:
