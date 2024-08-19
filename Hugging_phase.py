@@ -71,8 +71,10 @@ class FakeDataset(Dataset):
    
                                   num_workers=12)
   if is_xla:
-    data_loader = pl.MpDeviceLoader(data_loader, device)  loss_function = torch.nn.CrossEntropyLoss()
-  t0 = time.perf_counter()
+    data_loader = pl.MpDeviceLoader(data_loader, device)  
+    loss_function = torch.nn.CrossEntropyLoss()
+    t0 = time.perf_counter()
+    
   for idx, (inputs, targets) in enumerate(data_loader, start=1):
     if not is_xla:
       inputs = inputs.to(torch.cuda.current_device())
