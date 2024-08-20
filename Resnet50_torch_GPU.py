@@ -6,10 +6,10 @@ import torchvision.datasets as datasets
 from torch.utils.data import DataLoader
 import time
 
-# Set the device to CUDA if available, otherwise fall back to CPU
+# Setting the device to CUDA if available, otherwise fall back to CPU
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-# Transform and load the CIFAR-10 dataset
+# transform and then loading the CIFAR-10 dataset
 transform = transforms.Compose([
     transforms.Resize(224),
     transforms.ToTensor(),
@@ -19,10 +19,10 @@ transform = transforms.Compose([
 train_dataset = datasets.CIFAR10(root='./data', train=True, transform=transform, download=True)
 train_loader = DataLoader(train_dataset, batch_size=64, shuffle=True)
 
-# Load pre-trained ResNet50 model and move it to the CUDA device (GPU) or CPU
+# Loading the pre-trained ResNet50 model and then move it to the CUDA device (GPU) or CPU
 model = models.resnet50(pretrained=True).to(device)
 
-# Warm-up iterations
+# Warm-up and initializing the device
 def warmup(model, loader, device):
     model.eval()
     with torch.no_grad():
@@ -48,10 +48,10 @@ def benchmark_inference_pytorch(model, loader, device, iterations=100):
             processed_samples += data.size(0)
     
     throughput = processed_samples / total_time
-    print(f"Total inference time (PyTorch): {total_time:.3f} seconds")
-    print(f"Throughput (PyTorch): {throughput:.2f} samples/second")
+    print(f"Total inference time->(PyTorch): {total_time:.3f} seconds")
+    print(f"Throughput->(PyTorch): {throughput:.2f} samples/second")
     return total_time, throughput
 
-# Run warmup and benchmark functions
+
 warmup(model, train_loader, device)
 benchmark_inference_pytorch(model, train_loader, device)
