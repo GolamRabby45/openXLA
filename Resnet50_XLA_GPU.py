@@ -1,3 +1,10 @@
+"""
+This code sets up an XLA (Accelerated Linear Algebra) device, loads the CIFAR-10 dataset, and benchmarks the inference performance of a pre-trained ResNet50 model on the XLA device.
+
+The `warmup` function is used to warm up the model on the XLA device before running the benchmark. The `benchmark_inference_openxla` function measures the total inference time and throughput of the model on the XLA device.
+
+The code demonstrates how to use PyTorch's XLA support to leverage the performance of a GPU for deep learning tasks.
+"""
 import torch
 import torch.nn as nn
 import torch_xla
