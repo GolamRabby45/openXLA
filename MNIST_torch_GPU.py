@@ -8,8 +8,8 @@ from torchvision.utils import make_grid
 
 import numpy as np
 import pandas as pd
-from sklearn.metrics import confusion_matrix
-import matplotlib.pyplot as plt
+#from sklearn.metrics import confusion_matrix
+#import matplotlib.pyplot as plt
 import time
 
 # Check if GPU is available and set the device to CUDA if available
