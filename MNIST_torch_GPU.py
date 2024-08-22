@@ -1,4 +1,4 @@
-# Perform standard imports
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -8,15 +8,13 @@ from torchvision.utils import make_grid
 
 import numpy as np
 import pandas as pd
-#from sklearn.metrics import confusion_matrix
-#import matplotlib.pyplot as plt
 import time
 
-# Check if GPU is available and set the device to CUDA if available
+# Checking if GPU is available and set the device to CUDA if available
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"Running on device: {device}")
 
-# Load the MNIST dataset
+# Loading of the MNIST dataset
 transform = transforms.ToTensor()
 
 train_data = datasets.MNIST(root='../Data', train=True, download=True, transform=transform)
@@ -26,7 +24,7 @@ test_data = datasets.MNIST(root='../Data', train=False, download=True, transform
 train_loader = DataLoader(train_data, batch_size=10, shuffle=True)
 test_loader = DataLoader(test_data, batch_size=10, shuffle=False)
 
-# Define our convolutional neural network model
+# Define CNN model
 class ConvolutionalNetwork(nn.Module):
     def __init__(self):
         super().__init__()
@@ -83,7 +81,7 @@ def train_model(model, criterion, optimizer, train_loader, test_loader, device, 
             y_pred = model(X_train)  # We don't flatten X_train here
             loss = criterion(y_pred, y_train)
 
-            # Tally the number of correct predictions
+            
             predicted = torch.max(y_pred.data, 1)[1]
             batch_corr = (predicted == y_train).sum()
             trn_corr += batch_corr
@@ -121,7 +119,7 @@ accuracy: {trn_corr.item() * 100 / (10 * b):7.3f}%')
 
     print(f'\nDuration: {time.time() - start_time:.0f} seconds')  # Print the time elapsed
 
-# Now we call the function to train the model
+
 train_model(model, criterion, optimizer, train_loader, test_loader, device, epochs=5)
 
 # Benchmarking function
@@ -151,5 +149,5 @@ def benchmark_model(model, test_loader, device):
 
     return total_time, throughput
 
-# Perform benchmarking
+
 benchmark_model(model, test_loader, device)

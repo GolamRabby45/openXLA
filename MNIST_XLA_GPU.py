@@ -1,4 +1,4 @@
-# Perform standard imports
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -11,15 +11,13 @@ import torch_xla.distributed.xla_multiprocessing as xmp
 
 import numpy as np
 import pandas as pd
-#from sklearn.metrics import confusion_matrix
-#import matplotlib.pyplot as plt
 import time
 
 # Define device for XLA
 device = xm.xla_device()
 print(f"Running on XLA device: {device}")
 
-# Load the MNIST dataset
+# Loading of the MNIST dataset
 transform = transforms.ToTensor()
 
 train_data = datasets.MNIST(root='../Data', train=True, download=True, transform=transform)
@@ -39,7 +37,7 @@ test_loader = DataLoader(test_data, batch_size=10, sampler=test_sampler, num_wor
 train_loader = DataLoader(train_data, batch_size=10, shuffle=True)
 test_loader = DataLoader(test_data, batch_size=10, shuffle=False)
 
-# Define our convolutional neural network model
+# Define CNN model
 class ConvolutionalNetwork(nn.Module):
     def __init__(self):
         super().__init__()
@@ -96,10 +94,10 @@ def train_model(model, criterion, optimizer, train_loader, test_loader, device, 
             X_train, y_train = X_train.to(device), y_train.to(device)
 
             # Apply the model
-            y_pred = model(X_train)  # We don't flatten X_train here
+            y_pred = model(X_train)  
             loss = criterion(y_pred, y_train)
 
-            # Tally the number of correct predictions
+            
             predicted = torch.max(y_pred.data, 1)[1]
             batch_corr = (predicted == y_train).sum()
             trn_corr += batch_corr
@@ -139,7 +137,7 @@ accuracy: {trn_corr.item() * 100 / (10 * b):7.3f}%')
 
     print(f'\nDuration: {time.time() - start_time:.0f} seconds')  # Print the time elapsed
 
-# Now we call the function to train the model
+
 train_model(model, criterion, optimizer, train_loader, test_loader, device, epochs=5)
 
 # Benchmarking function
@@ -169,7 +167,7 @@ def benchmark_model(model, test_loader, device):
 
     return total_time, throughput
 
-# Perform benchmarking
+
 benchmark_model(model, test_loader, device)
 
 
