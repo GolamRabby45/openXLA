@@ -1,3 +1,8 @@
+"""
+The `State` class represents a state in the coffee machine's state machine. Each state has a name and a reference to the coffee machine instance.
+
+The `handle_input` method is an abstract method that must be implemented by subclasses to handle different input signals and transition to the next state accordingly.
+"""
 class State:
     def __init__(self, name, coffee_machine):
         self.name = name
@@ -8,7 +13,18 @@ class State:
 
 
 class StateA(State):
-    def handle_input(self, input_signal):
+"""
+    Represents the 'StateA' state in the coffee machine's state machine. This state handles various input signals and transitions to the appropriate next state.
+    
+    The `handle_input` method is responsible for processing the input signal and returning the appropriate response and next state. The possible input signals are:
+    
+    - 'clean': Transitions to the current state ('OK', self)
+    - 'pod': Transitions to the 'StateB' state ('OK', self.coffee_machine.state_b)
+    - 'water': Transitions to the 'StateC' state ('OK', self.coffee_machine.state_c)
+    - 'button': Transitions to the 'StateF' state with an 'error' response ('error', self.coffee_machine.state_f)
+    - Any other input signal: Returns an 'error' response and remains in the current state ('error', self)
+    """
+        def handle_input(self, input_signal):
         if input_signal == 'clean':
             return 'OK', self
         elif input_signal == 'pod':
